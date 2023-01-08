@@ -11,16 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-import os, json
-from django.core.exceptions import ImproperlyConfigured
-
-# 로딩 함수
-def get_confidential(confidential_file, k):
-    try:
-        return confidential_file[k]
-    except KeyError:
-        error_msg = "Set the {} environment variable".format(k)
-        raise ImproperlyConfigured(error_msg)
+import utils.loading.confidential as conf
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,11 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # secret key softcoding
-secretkey_path = os.path.join(BASE_DIR, 'secretkey.json')
-with open(secretkey_path, 'r') as f:
-    secretkey_file = json.loads(f.read())
-
-SECRET_KEY = get_confidential(secretkey_file, "SECRET_KEY")
+SECRET_KEY = conf.get_confidential('secretkey.json', "SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -90,16 +77,12 @@ WSGI_APPLICATION = 'ftrillasset.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 # DB password softcoding
-databasepw_path = os.path.join(BASE_DIR, 'databasepw.json')
-with open(databasepw_path, 'r') as f:
-    databasepw_file = json.loads(f.read())
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'FTRILL',
         'USER' : 'root',
-        'PASSWORD' : get_confidential(databasepw_file, "PASSWORD"),
+        'PASSWORD' : conf.get_confidential('databasepw.json', "PASSWORD"),
         'HOST' : 'localhost',
         'PORT' : '3306'
     }
