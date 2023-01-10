@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-import utils.loading.confidential as conf
+import utils.loading.confidential as confidential
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # secret key softcoding
-SECRET_KEY = conf.get_confidential('secretkey.json', "SECRET_KEY")
+SECRET_KEY = confidential.get_confidential('secretkey.json', "SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'stock',
 ]
 
 MIDDLEWARE = [
@@ -83,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'FTRILL',
         'USER' : 'root',
-        'PASSWORD' : conf.get_confidential('databasepw.json', "PASSWORD"),
+        'PASSWORD' : confidential.get_confidential('databasepw.json', "PASSWORD"),
         'HOST' : 'localhost',
         'PORT' : '3306'
     }
