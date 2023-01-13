@@ -2,12 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 # Create your views here.
-def backtest(request):
-    if request.method != "POST":
-        return render(request, 'stock/backtest.html')
-    else:
-        pass
-
 def backtest(request, company=None, start_date=None, end_date=None):
     if request.method != "POST":
         return render(request, 'stock/backtest.html')

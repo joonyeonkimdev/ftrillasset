@@ -3,12 +3,13 @@
 <title>{% block title %}백테스트{% endblock %}</title>
 
 {% block content %}
+
 <script>
   function search() {
     let company_name = document.getElementById("company_name");
     let start_date = document.getElementById("start_date");
     let end_date = document.getElementById("end_date");
-    
+
     if (!company_name.value) {
       alert("종목 이름을 입력하세요.");
 			company_name.focus();
@@ -24,7 +25,6 @@
                         +"&end_date="+end_date.value;
     }
 
-    
   }
 </script>
 

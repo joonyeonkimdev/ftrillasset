@@ -8,7 +8,7 @@ Created on Mon Jan  2 15:07:34 2023
 import matplotlib.pyplot as plt
 import sys
 import pandas as pd
-import Analyzer
+import utils.stockdb.Analyzer as Analyzer
 import datetime
 from datetime import timedelta
 from matplotlib import font_manager, rc

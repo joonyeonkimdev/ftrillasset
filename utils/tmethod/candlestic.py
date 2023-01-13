@@ -7,7 +7,7 @@ Created on Thu Jan 12 16:46:51 2023
 import pandas as pd
 from datetime import datetime
 from datetime import timedelta
-import Analyzer
+import utils.stockdb.Analyzer as Analyzer
 from mpl_finance import candlestick_ohlc
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -38,11 +38,11 @@ def candlestic(company_name,start_date=None, end_date=None):
 
     plt.figure(figsize=(9,9))
     p1 = plt.subplot(3,1,1)
-    plt.title('momentum')
+    plt.title('candlestic')
     plt.grid(True)
     candlestick_ohlc(p1, ohlc.values, width=.6, colorup='red', colordown='blue')
     p1.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
     #plt.plot(df.number, df['ema130'], color='c', label='ema130')
     plt.show()
-    plt.savefig('momentum.png')
-    return 'momentum.png'
+    plt.savefig('candlestic.png')
+    return 'candlestic.png'

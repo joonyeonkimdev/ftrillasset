@@ -11,7 +11,7 @@ import datetime
 from datetime import timedelta
 from mpl_finance import candlestick_ohlc
 import matplotlib.dates as mdates
-import Analyzer
+import utils.stockdb.Analyzer as Analyzer
 
 def tsgraph(company_name,start_date=None,end_date=None):
     
