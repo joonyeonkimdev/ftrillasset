@@ -6,9 +6,15 @@ import utils.tmethod.dualmomentum as dm
 import utils.tmethod.candlestic as candle
 
 # Create your views here.
-def backtest(request, company=None, start_date=None, end_date=None):
+def backtest(request):
     if request.method != "POST":
-        candle_chart_filename = candle.candlestic(company, start_date, end_date)
+        company = request.GET.get('company')
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+        if company != None:
+            filename = candle.candlestic(company, start_date, end_date)
+            print(filename+"+++++++++++++++++++++++++++++++++++++++++++++++++++")
+            return render(request, 'stock/backtest.html', {'filename':filename})
         return render(request, 'stock/backtest.html')
     else:
         pass
