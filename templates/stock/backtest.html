@@ -3,56 +3,76 @@
 <title>{% block title %}백테스트{% endblock %}</title>
 
 {% block content %}
+<script>
+  function search() {
+    let company_name = document.getElementById("company_name");
+    let start_date = document.getElementById("start_date");
+    let end_date = document.getElementById("end_date");
+    
+    if (!company_name.value) {
+      alert("종목 이름을 입력하세요.");
+			company_name.focus();
+    } else if (!start_date.value) {
+      alert("시작일을 선택하세요.");
+			start_date.focus();
+    } else if (!end_date.value) {
+      alert("종료일을 선택하세요.");
+			end_date.focus();
+    } else {
+      location.href = "?company="+company_name.value
+                        + "&start_date="+start_date.value
+                        +"&end_date="+end_date.value;
+    }
+
+    
+  }
+</script>
+
 <div class="container text-center py-5 ">
-    <h1>백테스트 페이지 </h1>
-    <br><br><br>
-    <div class="row">
-      <div class="col">
-    <div class="input-group mb-3 w-auto p-3 " style="width: 1000px; margin-right:0px; padding:0rem;">
-        <input type="text" class="form-control w-75 p-3" placeholder="종목을 입력하세요." aria-label="Recipient's username" aria-describedby="button-addon2">
+  <h1>백테스트 페이지 </h1>
+  <br><br><br>
+  <div class="row">
+    <div class="col">
+      <div class="input-group mb-3 w-auto p-3 " style="width: 1000px; margin-right:0px; padding:0rem;">
+        <input type="text" class="form-control w-75 p-3" placeholder="종목을 입력하세요." id="company_name">
         <div class="input-group-append padding:0rem;">
-          <button class="btn btn-outline-secondary " type="button" id="button-addon2" href="#">검색</button>
+          <button class="btn btn-outline-secondary " type="button" id="search" onclick="search()">검색</button>
         </div>
       </div>
-    </div>
       <div style="margin-bottom: 30px;">
-        <h5>날짜 선택</h5>
-        <input type="date" href="#">
-         ~
-        <input type="date" href="#">
-      </div>
-    </div>
-    <div class="border border-gray width w-auto h-auto" style="width: 1000px; height:270px;">
-    <div class="container">
-        <div class="row">
-    <br><br>
-<div class="col" style="margin-top: 30px;">
-  <h5>매매기법을 선택해 주세요</h5><br>
-      <div>
-        <button type="button" class="btn btn-outline-dark" data-toggle="button" aria-pressed="false" href="#">
-          볼린저 밴드
-        </button>
-        <button type="button" class="btn btn-outline-dark" data-toggle="button" aria-pressed="false" href="#">
-          삼중창 매매
-        </button>
-        <button type="button" class="btn btn-outline-dark" data-toggle="button" aria-pressed="false" href="#">
-          모멘텀 투자
-        </button>
-      </div>
-     </div>
-    </div>
-</div>
-<div class="card mb-3" style="margin-top: 45px;">
-  <img src="/static/images/home_carousel1.jpg" style="width: 1106px; height:540px;" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">종목 + 매매기법 그래프</h5>
-      <div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">
-       수익률&nbsp;&nbsp;&nbsp;<a href="#" class="alert-link">%</a>
+        <input type="date" min="2018-01-01" id="start_date"> ~ <input type="date" min="2018-01-01" id="end_date">
       </div>
     </div>
   </div>
-</div>
-</span>
-{% endblock content %}
-#https://getbootstrap.com/docs/4.6/getting-started/introduction/
-
+  <div class="border border-gray width w-auto h-auto" style="width: 1000px; height:270px;">
+    <div class="container">
+      <div class="row">
+        <br><br>
+        <div class="col" style="margin-top: 30px;">
+          <h5>매매기법을 선택해 주세요</h5><br>
+          <div>
+            <button type="button" class="btn btn-outline-danger" data-toggle="button" aria-pressed="false" href="#">
+              볼린저 밴드
+            </button>
+            <button type="button" class="btn btn-outline-dark" data-toggle="button" aria-pressed="false" href="#">
+              삼중창 매매
+            </button>
+            <button type="button" class="btn btn-outline-dark" data-toggle="button" aria-pressed="false" href="#">
+              모멘텀 투자
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-3" style="margin-top: 45px;">
+      <img src="/static/images/home_carousel1.jpg" style="width: 1106px; height:540px;" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">종목 + 매매기법 그래프</h5>
+        <div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">
+          수익률&nbsp;&nbsp;&nbsp;<a href="#" class="alert-link">%</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </span>
+  {% endblock content %}

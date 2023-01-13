@@ -8,6 +8,12 @@ def backtest(request):
     else:
         pass
 
+def backtest(request, company=None, start_date=None, end_date=None):
+    if request.method != "POST":
+        return render(request, 'stock/backtest.html')
+    else:
+        pass
+
 def simulate(request):
     if request.method != "POST":
         return render(request, 'stock/simulate.html')
