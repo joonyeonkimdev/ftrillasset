@@ -7,7 +7,7 @@ Created on Sat Jan  7 15:39:15 2023
 
 import pandas as pd
 import pymysql
-import Analyzer
+import utils.stockdb.Analyzer as Analyzer
 
 
 

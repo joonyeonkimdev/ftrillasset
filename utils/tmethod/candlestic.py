@@ -44,5 +44,5 @@ def candlestic(company_name,start_date=None, end_date=None):
     p1.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
     #plt.plot(df.number, df['ema130'], color='c', label='ema130')
     plt.show()
-    plt.savefig('candlestic.png')
+    plt.savefig('/media/images/candlestic.png')
     return 'candlestic.png'

@@ -63,6 +63,7 @@ def bollingerband1(company_name,start_date=None,end_date=None):
    plt.legend(loc='best')
    plt.title('볼린저밴드')
    return 'Bollingerband1.png'
+
 def bollingerband2(company_name,start_date=None,end_date=None):
           f_path = "c:/Windows/Fonts/malgun.ttf"
           font_name = font_manager.FontProperties(fname=f_path).get_name()
@@ -98,7 +99,6 @@ def bollingerband2(company_name,start_date=None,end_date=None):
           plt.legend(loc='best')
           return 'Bollingerband2.png'
           
-
 
 def earingrate(company_name,start_date=None,end_date=None):
     Analyzer.MarketDB()
@@ -190,7 +190,7 @@ def earingrate(company_name,start_date=None,end_date=None):
                
                
             
-            print(gross_rr+gross_bb)
+            print(gross_rr*gross_bb)
             
             
 def signallist(company_name,start_date=None,end_date=None):
