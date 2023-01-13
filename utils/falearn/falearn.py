@@ -17,7 +17,7 @@ def predict(code):
 
     plt.rcParams['font.family'] = 'NanumGothic'
 
-    import Analyzer
+    import utils.stockdb.Analyzer as Analyzer
 
     mk = Analyzer.MarketDB()
     stock = mk.get_daily_price(code,'2018-05-04')
@@ -121,5 +121,5 @@ def predict(code):
     pred
     price = stock.CLOSE[-1] * pred[-1] / df.iloc[-1,3]
     #print("내일 주가 :", stock.CLOSE[-1] * pred[-1] / df.iloc[-1,3], 'KRW')
-    return price
+    return price[0]
     
