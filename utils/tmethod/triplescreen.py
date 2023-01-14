@@ -132,9 +132,7 @@ def tsrevenue(company_name,start_date=None,end_date=None):
     
     buy_Price=0     
     sell_Price=0
-
-    
-  
+    gross_rr = 1
 
     for i in range(1, len(df.CLOSE)) :
         if df.ema130.values[i-1] < df.ema130.values[i] and  df.slow_d.values[i-1] >= 20 and df.slow_d.values[i] < 20:  
@@ -153,11 +151,9 @@ def tsrevenue(company_name,start_date=None,end_date=None):
                     continue
     if buy_Price > 0 and sell_Price > 0:
         rr=(sell_Price-buy_Price)/buy_Price
-        print(rr)
-        gross_rr = 1
         gross_rr *= rr
-        print(gross_rr)
-        return    
+    
+    return gross_rr
 
 
 def signal(company_name,start_date=None,end_date=None):

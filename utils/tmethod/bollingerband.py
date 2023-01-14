@@ -17,9 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 def bollingerband1(company_name, start_date=None, end_date=None):
-    f_path = "c:/Windows/Fonts/malgun.ttf"
-    font_name = font_manager.FontProperties(fname=f_path).get_name()
-    rc('font', family=font_name)
+    plt.rc("font",family="Malgun Gothic")
 
     Analyzer.MarketDB()
     mk = Analyzer.MarketDB()
@@ -51,7 +49,7 @@ def bollingerband1(company_name, start_date=None, end_date=None):
     plt.subplot(2, 1, 1)
     plt.plot(df.index, df['CLOSE'], color='#0000ff', label='종가')
     plt.plot(df.index, df['UPPER'], 'r--', label='상단밴드')
-    plt.plot(df.index, df['MA20'], 'k--', label='20개의종가의평균')
+    plt.plot(df.index, df['MA20'], 'k--', label='20일 이동평균')
     plt.plot(df.index, df['LOWER'], 'c--', label='하단밴드')
     plt.fill_between(df.index, df['UPPER'], df['LOWER'], color='0.9')
 
@@ -64,18 +62,17 @@ def bollingerband1(company_name, start_date=None, end_date=None):
             plt.plot(df.index.values[i], df.CLOSE.values[i], 'bv')
             df[19:]
 
+    plt.legend(loc='best')
+    plt.title('볼린저밴드(추세추종)')
+
     timestamp = datetime.datetime.now().timestamp()
     filename = 'Bollingerband1' + str(timestamp) + '.png'
     plt.savefig(str(BASE_DIR) + '/static/stock_img/' + filename, bbox_inches='tight', pad_inches=0.1)
-    plt.legend(loc='best')
-    plt.title('볼린저밴드')
     return filename
 
 
 def bollingerband2(company_name, start_date=None, end_date=None):
-    f_path = "c:/Windows/Fonts/malgun.ttf"
-    font_name = font_manager.FontProperties(fname=f_path).get_name()
-    rc('font', family=font_name)
+    plt.rc("font",family="Malgun Gothic")
 
     Analyzer.MarketDB()
     mk = Analyzer.MarketDB()
@@ -95,10 +92,10 @@ def bollingerband2(company_name, start_date=None, end_date=None):
     plt.figure(figsize=(10, 9))
     plt.subplot(2, 1, 1)
     plt.title('Bollunger band')
-    plt.plot(dr.index, dr['CLOSE'], color='#0000ff', label='Close')
-    plt.plot(dr.index, dr['UPPER'], 'r--', label='Upper band')
-    plt.plot(dr.index, dr['MA20'], 'k--', label='Moving average 20')
-    plt.plot(dr.index, dr['LOWER'], 'c--', label='Lower band')
+    plt.plot(dr.index, dr['CLOSE'], color='#0000ff', label='종가')
+    plt.plot(dr.index, dr['UPPER'], 'r--', label='상단밴드')
+    plt.plot(dr.index, dr['MA20'], 'k--', label='20일 이동평균')
+    plt.plot(dr.index, dr['LOWER'], 'c--', label='하단밴드')
     plt.fill_between(dr.index, dr['UPPER'], dr['LOWER'], color='0.9')
     for i in range(0, len(dr.CLOSE)):
         if dr.PB.values[i] < 0.05 and dr.IIP21.values[i] > 0:
@@ -106,10 +103,12 @@ def bollingerband2(company_name, start_date=None, end_date=None):
         elif dr.PB.values[i] > 0.95 and dr.IIP21.values[i] < 0:
             plt.plot(dr.index.values[i], dr.CLOSE.values[i], 'bv')
 
+    plt.legend(loc='best')
+    plt.title('볼린저밴드(반전매매)')
+
     timestamp = datetime.datetime.now().timestamp()
     filename = 'Bollingerband2' + str(timestamp) + '.png'
     plt.savefig(str(BASE_DIR) + '/static/stock_img/' + filename, bbox_inches='tight', pad_inches=0.1)
-    plt.legend(loc='best')
     return filename
 
 
@@ -117,9 +116,9 @@ def earingrate(company_name, start_date=None, end_date=None):
     Analyzer.MarketDB()
     mk = Analyzer.MarketDB()
     df = mk.get_daily_price(
-        company_name, start_date=None, end_date=None)  # 타입에러
+        company_name, start_date=None, end_date=None)
     dr = mk.get_daily_price(
-        company_name, start_date=None, end_date=None)  # 타입에러
+        company_name, start_date=None, end_date=None)
     # 수익률
     df['MA20'] = df['CLOSE'].rolling(window=20).mean()
     df['STUDDEV'] = df['CLOSE'].rolling(window=20).std()
@@ -203,16 +202,16 @@ def earingrate(company_name, start_date=None, end_date=None):
                 buy_price1 = 0
                 sell_price1 = 0
 
-            print(gross_rr*gross_bb)
+    return gross_rr*gross_bb
 
 
 def signallist(company_name, start_date=None, end_date=None):
     Analyzer.MarketDB()
     mk = Analyzer.MarketDB()
     df = mk.get_daily_price(
-        company_name, start_date=None, end_date=None)  # 타입에러
+        company_name, start_date=None, end_date=None)
     dr = mk.get_daily_price(
-        company_name, start_date=None, end_date=None)  # 타입에러
+        company_name, start_date=None, end_date=None)
 
     df['MA20'] = df['CLOSE'].rolling(window=20).mean()
     df['STUDDEV'] = df['CLOSE'].rolling(window=20).std()
@@ -262,8 +261,7 @@ def signallist(company_name, start_date=None, end_date=None):
         if dr.PB.values[i] < 0.05 and dr.IIP21.values[i] > 0:
             print("3", dr.DATE.values[i], df.CLOSE.values[i])
         elif dr.PB.values[i] > 0.95 and dr.IIP21.values[i] < 0:
-
             print("4", dr.DATE.values[i], dr.CLOSE.values[i])
 
-    dic = {1: df.CLOSE.values[i], 2: df.CLOSE.values[i],
+    dic = {"1": df.CLOSE.values[i], 2: df.CLOSE.values[i],
            3: dr.CLOSE.values[i], 4: dr.CLOSE.values[i]}
