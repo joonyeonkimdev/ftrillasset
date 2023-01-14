@@ -29,7 +29,6 @@ def backtest(request):
     else:
         pass
 
-
 def bollingerband(request):
     json_obj = json.loads(request.body)
     company = json_obj.get('company')
@@ -42,6 +41,37 @@ def bollingerband(request):
     filename2 = bb.bollingerband2(company, start_date, end_date)
     rr = bb.earingrate(company, start_date, end_date)
     data = {'filename1': filename1, 'filename2': filename2, 'rr' : rr}
+    return JsonResponse(data)
+
+def triplescreen(request):
+    json_obj = json.loads(request.body)
+    company = json_obj.get('company')
+    start_date = json_obj.get('start_date')
+    end_date = json_obj.get('end_date')
+    triplescreen = json_obj.get('triplescreen')
+
+    remove_all_files()
+    filename = ts.tsgraph(company, start_date, end_date)
+    rr = ts.tsrevenue(company, start_date, end_date)
+    data = {'filename': filename, 'rr' : rr}
+    return JsonResponse(data)
+
+def dualmomentum(request):
+    json_obj = json.loads(request.body)
+    company = json_obj.get('company')
+    start_date = json_obj.get('start_date')
+    end_date = json_obj.get('end_date')
+    dualmomentum = json_obj.get('dualmomentum')
+
+    remove_all_files()
+    dualmomentum_list = dm.mmt()
+
+    if company in dualmomentum_list:
+        dualmomentum_flag = '모멘텀 종목입니다.<br>해당 종목은 상승장에 있습니다.'
+    else:
+        dualmomentum_flag = '모멘텀 종목이 아닙니다.<br>해당 종목은 하락장 또는 횡보장에 있습니다.'
+
+    data = {'dualmomentum_flag': dualmomentum_flag}
     return JsonResponse(data)
 
 

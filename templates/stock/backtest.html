@@ -27,7 +27,7 @@
 </script>
 
 <div class="container text-center py-5 ">
-  <h1>백테스트</h1>
+  <h1>Backtesting</h1>
   <br><br><br>
   <div class="row">
     <div class="col">
@@ -45,6 +45,7 @@
     </div>
   </div>
   <div class="card mb-3 border-0" style="margin-top: 45px;">
+    <h3>- {{company}} -</h3><br>
     {% if filename %}
       <div id="stock_img_div">
         <img src="/static/stock_img/{{filename}}" class="card-img-top" id="stock_img">
@@ -54,37 +55,23 @@
         <div class="row">
           <br><br>
           <div class="col" style="margin-top: 30px;">
-            <div>
-              <button type="button" class="btn btn-outline-success" id="bollingerband">
-                볼린저 밴드
-              </button>
-              <button type="button" class="btn btn-outline-success" id="triplescreen">
-                삼중창 매매
-              </button>
-              <button type="button" class="btn btn-outline-success" id="dualmomentum">
-                모멘텀 투자
-              </button>
-            </div>
+            {% if filename %}
+              <div>
+                <button type="button" class="btn btn-outline-success" id="bollingerband">
+                  볼린저 밴드
+                </button>
+                <button type="button" class="btn btn-outline-success" id="triplescreen">
+                  삼중창 매매
+                </button>
+                <button type="button" class="btn btn-outline-success" id="dualmomentum">
+                  모멘텀 투자
+                </button>
+              </div>
+            {% endif %}
           </div>
         </div>
       </div>
       <div class="card-body" id="rr_div">
-        {% if bollingerband %}
-          <div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">
-            {{bollingerband}} 연간 수익률&nbsp;&nbsp;&nbsp;  %
-          </div>
-        {% elif triplescreen %}
-          <div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">
-            {{triplescreen}} 연간 수익률&nbsp;&nbsp;&nbsp;  %
-          </div>
-        {% elif dualmomentum %}
-          <div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">
-            {{dualmomentum}} 연간 수익률&nbsp;&nbsp;&nbsp;  %
-          </div>
-        {% endif %}
-        <div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">
-          내일의 예상 주가&nbsp;&nbsp;&nbsp;  000
-        </div>
       </div>
   </div>
 
@@ -113,7 +100,7 @@
         success : function(data) {
           html_for_filename1 = '<img src="/static/stock_img/' + data.filename1 + '"' + ' class="card-img-top">'
           html_for_filename2 = '<br><img src="/static/stock_img/' + data.filename2 + '"' + ' class="card-img-top">'
-          html_for_rr = '<div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">' + '연간 수익률: ' + data.rr + '%' +'</div>'
+          html_for_rr = '<div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">' + '연간 수익률: ' + data.rr + ' %' +'</div>'
           $("#stock_img_div").html(html_for_filename1)
           $("#stock_img_div").append(html_for_filename2)
           $("#rr_div").html(html_for_rr)
@@ -121,9 +108,55 @@
         error : function(){
           alert('매매기법 로드에 실패하였습니다, 다시 시도해 주세요.')
         }
-
       });
+    });
 
+    triplescreen.addEventListener('click', e => {
+      let param = {
+        'company' : company_name.value,
+        'start_date' : start_date.value,
+        'end_date' : end_date.value,
+        'triplescreen' : 'triplescreen'
+      }
+
+      $.ajax({
+        url : 'triplescreen',
+        type : 'POST',
+        headers: {'X-CSRFTOKEN' : '{{ csrf_token }}'},
+        data : JSON.stringify(param),
+        success : function(data) {
+          html_for_filename = '<img src="/static/stock_img/' + data.filename + '"' + ' class="card-img-top">'
+          html_for_rr = '<div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">' + '연간 수익률: ' + data.rr + ' %' +'</div>'
+          $("#stock_img_div").html(html_for_filename)
+          $("#rr_div").html(html_for_rr)
+        },
+        error : function(){
+          alert('매매기법 로드에 실패하였습니다, 다시 시도해 주세요.')
+        }
+      });
+    });
+
+    dualmomentum.addEventListener('click', e => {
+      let param = {
+        'company' : company_name.value,
+        'start_date' : start_date.value,
+        'end_date' : end_date.value,
+        'dualmomentum' : 'dualmomentum'
+      }
+
+      $.ajax({
+        url : 'dualmomentum',
+        type : 'POST',
+        headers: {'X-CSRFTOKEN' : '{{ csrf_token }}'},
+        data : JSON.stringify(param),
+        success : function(data) {
+          html_for_rr = '<div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">' + data.dualmomentum_flag +'</div>'
+          $("#rr_div").html(html_for_rr)
+        },
+        error : function(){
+          alert('매매기법 로드에 실패하였습니다, 다시 시도해 주세요.')
+        }
+      });
     });
 
 

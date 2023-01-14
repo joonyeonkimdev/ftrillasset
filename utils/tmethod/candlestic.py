@@ -32,7 +32,7 @@ def candlestic(company_name,start_date=None, end_date=None):
     plt.rc("font", family="Malgun Gothic")
     plt.figure(figsize=(9,9))
     p1 = plt.subplot(3,1,1)
-    plt.title(company_name)
+    #plt.title(company_name)
     plt.grid(True)
     candlestick_ohlc(p1, ohlc.values, width=.6, colorup='red', colordown='blue')
     p1.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))

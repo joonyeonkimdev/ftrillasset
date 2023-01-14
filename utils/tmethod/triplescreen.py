@@ -4,7 +4,7 @@ Created on Wed Jan  4 15:21:50 2023
 
 @author: PC
 """
-
+from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
@@ -13,15 +13,13 @@ from mplfinance.original_flavor import candlestick_ohlc
 import matplotlib.dates as mdates
 import utils.stockdb.Analyzer as Analyzer
 
-def tsgraph(company_name,start_date=None,end_date=None):
-    
-    
-    plt.rc("font",family="Malgun Gothic")
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-    Analyzer.MarketDB()
+def tsgraph(company_name,start_date=None,end_date=None):
+    plt.rc("font", family="Malgun Gothic")
+
     mk = Analyzer.MarketDB()
     df= mk.get_daily_price(company_name,start_date=None,end_date=None)
-
 
     ema60=df.CLOSE.ewm(span=60).mean()           # 1. 종가의 12주 지수 이동평균
     ema130=df.CLOSE.ewm(span=130).mean()         # 2. 종가의 26주 지수 이동평균
@@ -100,16 +98,14 @@ def tsgraph(company_name,start_date=None,end_date=None):
     plt.plot(df.number, df['slow_d'], color='k', label='%D')
     plt.yticks([0,20,80,100])
     plt.legend(loc='best')
-    plt.show()
-    
-    plt.savefig('Triplescreen.png')
-    return
+
+    timestamp = datetime.datetime.now().timestamp()
+    filename = 'triplescreen' + str(timestamp) + '.png'
+    plt.savefig(str(BASE_DIR) + '/static/stock_img/' + filename, bbox_inches='tight', pad_inches=0.1)
+    return filename
 
 def tsrevenue(company_name,start_date=None,end_date=None):
-
-#수익률
-
-    Analyzer.MarketDB()
+    #수익률
     mk = Analyzer.MarketDB()
     df= mk.get_daily_price(company_name,start_date=None,end_date=None)
 
@@ -157,8 +153,6 @@ def tsrevenue(company_name,start_date=None,end_date=None):
 
 
 def signal(company_name,start_date=None,end_date=None):
-    
-
         Analyzer.MarketDB()
         mk = Analyzer.MarketDB()
         df= mk.get_daily_price(company_name,start_date=None,end_date=None)

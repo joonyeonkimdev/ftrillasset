@@ -7,4 +7,6 @@ urlpatterns = [
     path('simulate', views.simulate, name='simulate'),
     path('portfolio', views.portfolio, name='portfolio'),
     path('bollingerband', views.bollingerband, name='bollingerband'),
+    path('triplescreen', views.triplescreen, name='triplescreen'),
+    path('dualmomentum', views.dualmomentum, name='dualmomentum'),
 ]

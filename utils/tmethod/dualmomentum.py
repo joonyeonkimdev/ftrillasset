@@ -4,25 +4,24 @@ Created on Sat Jan  7 15:39:15 2023
 
 @author: 박지호
 """
-
+from pathlib import Path
 import pandas as pd
 import pymysql
 import utils.stockdb.Analyzer as Analyzer
+import utils.loading.confidential as confidential
 
-
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 def mmt():
-         f = pd.read_csv("DGS1.csv")
+         f = pd.read_csv(str(BASE_DIR) + "/utils/tmethod/DGS1.csv")
          a = (f['DGS1'].mean())
 
-
-
          mk = Analyzer.MarketDB()
-         start_date = "2022-01-12"
-         end_date = "2023-01-12"
+         start_date = "2022-01-01"
+         end_date = "2023-01-01"
          stock_count = 600
          connection = pymysql.connect(host='localhost', port=3306, 
-            db='FTRILL', user='root', passwd='1234', charset="utf8")
+            db='FTRILL', user='root', passwd=confidential.get_confidential('databasepw.json', "PASSWORD"), charset="utf8")
          cursor = connection.cursor()
         
         # 사용자가 입력한 시작일자를 DB에서 조회되는 일자로 보정 
@@ -62,8 +61,7 @@ def mmt():
                 continue
             new_price = int(result[0])
             returns = (new_price / old_price - 1) * 100
-            rows.append([code, mk.codes[code], old_price, new_price, 
-                returns])
+            rows.append([code, mk.codes[code], old_price, new_price, returns])
 
         
         # 상대 모멘텀 데이터프레임을 생성한 후 수익률순으로 출력, 절대모멘텀 수익률 출력
@@ -77,7 +75,7 @@ def mmt():
          print(aaa)
          print(f"\nAbasolute momentum ({start_date} ~ {end_date}) : "\
             f"{df['returns'].mean():.2f}%")
-         return list(aaa['code'])
+         return list(aaa['company'])
          
     
 
