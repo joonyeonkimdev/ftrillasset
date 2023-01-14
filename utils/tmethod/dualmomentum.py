@@ -12,8 +12,7 @@ import utils.stockdb.Analyzer as Analyzer
 
 
 def mmt():
-         f = pd.read_csv("DGS1.csv")
-         a = (f['DGS1'].mean())
+         
 
 
 
@@ -64,6 +63,12 @@ def mmt():
             returns = (new_price / old_price - 1) * 100
             rows.append([code, mk.codes[code], old_price, new_price, 
                 returns])
+
+         f = pd.read_csv("DGS1.csv")
+         idx = f[f['DGS1'] == "."].index
+         f.drop(idx , inplace=True)
+         f = f.astype({'DGS1':'float'})
+         a = (f['DGS1'].mean())   
 
         
         # 상대 모멘텀 데이터프레임을 생성한 후 수익률순으로 출력, 절대모멘텀 수익률 출력
