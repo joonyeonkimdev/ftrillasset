@@ -17,7 +17,7 @@ def predict(code):
 
     plt.rcParams['font.family'] = 'NanumGothic'
 
-    import Analyzer
+    import utils.stockdb.Analyzer as Analyzer
 
     mk = Analyzer.MarketDB()
     stock = mk.get_daily_price(code,'2018-05-04')

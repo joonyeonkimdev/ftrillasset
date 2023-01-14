@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 def candlestic(company_name,start_date=None, end_date=None):
     Analyzer.MarketDB()
     mk = Analyzer.MarketDB()
-    df= mk.get_daily_price(company_name, start_date, end_date)#타입에러
+    df= mk.get_daily_price(company_name, start_date, end_date)
 
     df['number'] = df.index.map(mdates.date2num)
     ohlc = df[['number','OPEN','HIGH','LOW','CLOSE']]
@@ -29,14 +29,14 @@ def candlestic(company_name,start_date=None, end_date=None):
     slow_d = fast_k.rolling(window=3).mean()                                
     df = df.assign(fast_k=fast_k, slow_d=slow_d).dropna()                   
 
+    plt.rc("font", family="Malgun Gothic")
     plt.figure(figsize=(9,9))
     p1 = plt.subplot(3,1,1)
-    plt.title('candlestic')
+    plt.title(company_name)
     plt.grid(True)
     candlestick_ohlc(p1, ohlc.values, width=.6, colorup='red', colordown='blue')
     p1.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
     timestamp =  datetime.now().timestamp()
     filename = 'candlestic' + str(timestamp) + '.png'
-    plt.savefig('/static/images/' + filename)
-    print('/static/images/' + filename)
+    plt.savefig(str(BASE_DIR) + '/static/stock_img/' + filename, bbox_inches='tight', pad_inches=0.1)
     return filename

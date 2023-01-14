@@ -3,7 +3,6 @@
 <title>{% block title %}백테스트{% endblock %}</title>
 
 {% block content %}
-
 <script>
   function search() {
     let company_name = document.getElementById("company_name");
@@ -12,67 +11,114 @@
 
     if (!company_name.value) {
       alert("종목 이름을 입력하세요.");
-			company_name.focus();
+      company_name.focus();
     } else if (!start_date.value) {
       alert("시작일을 선택하세요.");
-			start_date.focus();
+      start_date.focus();
     } else if (!end_date.value) {
       alert("종료일을 선택하세요.");
-			end_date.focus();
+      end_date.focus();
     } else {
-      location.href = "?company="+company_name.value
-                        + "&start_date="+start_date.value
-                        +"&end_date="+end_date.value;
+      location.href = "?company=" + company_name.value
+        + "&start_date=" + start_date.value
+        + "&end_date=" + end_date.value;
     }
-
   }
 </script>
 
 <div class="container text-center py-5 ">
-  <h1>백테스트 페이지 </h1>
+  <h1>백테스트</h1>
   <br><br><br>
   <div class="row">
     <div class="col">
       <div class="input-group mb-3 w-auto p-3 " style="width: 1000px; margin-right:0px; padding:0rem;">
-        <input type="text" class="form-control w-75 p-3" placeholder="종목을 입력하세요." id="company_name">
+        <input type="text" class="form-control w-75 p-3" placeholder="종목을 입력하세요." id="company_name" value="{{company}}">
         <div class="input-group-append padding:0rem;">
           <button class="btn btn-outline-secondary " type="button" id="search" onclick="search()">검색</button>
         </div>
       </div>
       <div style="margin-bottom: 30px;">
-        <input type="date" min="2018-01-01" id="start_date"> ~ <input type="date" min="2018-01-01" id="end_date">
+        <input type="date" min="2018-01-01" id="start_date" value="{{start_date}}">
+        ~ 
+        <input type="date" min="2018-01-01" id="end_date" value="{{end_date}}">
       </div>
     </div>
   </div>
-  <div class="border border-gray width w-auto h-auto" style="width: 1000px; height:270px;">
-    <div class="container">
-      <div class="row">
-        <br><br>
-        <div class="col" style="margin-top: 30px;">
-          <h5>매매기법을 선택해 주세요</h5><br>
-          <div>
-            <button type="button" class="btn btn-outline-danger" data-toggle="button" aria-pressed="false" href="#">
-              볼린저 밴드
-            </button>
-            <button type="button" class="btn btn-outline-dark" data-toggle="button" aria-pressed="false" href="#">
-              삼중창 매매
-            </button>
-            <button type="button" class="btn btn-outline-dark" data-toggle="button" aria-pressed="false" href="#">
-              모멘텀 투자
-            </button>
+  <div class="card mb-3 border-0" style="margin-top: 45px;">
+    {% if filename %}
+      <img src="/static/stock_img/{{filename}}" class="card-img-top" alt="..."><br>
+    {% endif %}
+      <div class="container">
+        <div class="row">
+          <br><br>
+          <div class="col" style="margin-top: 30px;">
+            <div>
+              <button type="button" class="btn btn-outline-success" id="bollingerband" href="#">
+                볼린저 밴드
+              </button>
+              <button type="button" class="btn btn-outline-success" id="triplescreen" href="#">
+                삼중창 매매
+              </button>
+              <button type="button" class="btn btn-outline-success" id="dualmomentum" href="#">
+                모멘텀 투자
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="card mb-3" style="margin-top: 45px;">
-      <img src="/static/images/{{filename}}" style="width: 1106px; height:540px;" class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">종목 + 매매기법 그래프</h5>
+        {% if bollingerband %}
+          <div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">
+            {{bollingerband}} 연간 수익률&nbsp;&nbsp;&nbsp;  %
+          </div>
+        {% elif triplescreen %}
+          <div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">
+            {{triplescreen}} 연간 수익률&nbsp;&nbsp;&nbsp;  %
+          </div>
+        {% elif dualmomentum %}
+          <div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">
+            {{dualmomentum}} 연간 수익률&nbsp;&nbsp;&nbsp;  %
+          </div>
+        {% endif %}
         <div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">
-          수익률&nbsp;&nbsp;&nbsp;<a href="#" class="alert-link">%</a>
+          내일의 예상 주가&nbsp;&nbsp;&nbsp;  000
         </div>
       </div>
-    </div>
   </div>
-  </span>
+
+  <script>
+    let bollingerband = document.getElementById("bollingerband");
+    let triplescreen = document.getElementById("triplescreen");
+    let dualmomentum = document.getElementById("dualmomentum");
+
+    let company_name = document.getElementById("company_name");
+    let start_date = document.getElementById("start_date");
+    let end_date = document.getElementById("end_date");
+
+    bollingerband.addEventListener('click', e => {
+      let param = {
+        'company' : company_name.value,
+        'start_date' : start_date.value,
+        'end_date' : end_date.value,
+        'bollingerband' : 'bollingerband'
+      }
+
+      $.ajax({
+        url : 'bollingerband',
+        type : 'POST',
+        headers: {'X-CSRFTOKEN' : '{{ csrf_token }}'},
+        data : JSON.stringify(param),
+        success : function(data) {
+
+        },
+        error : function(){
+          alert('매매기법 로드에 실패하였습니다, 다시 시도해 주세요.')
+        }
+
+      });
+
+    });
+
+
+  </script>
   {% endblock content %}
