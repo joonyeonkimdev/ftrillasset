@@ -121,5 +121,5 @@ def predict(code):
     pred
     price = stock.CLOSE[-1] * pred[-1] / df.iloc[-1,3]
     #print("내일 주가 :", stock.CLOSE[-1] * pred[-1] / df.iloc[-1,3], 'KRW')
-    return price
+    return price[0]
     
