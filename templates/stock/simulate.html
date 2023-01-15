@@ -15,8 +15,11 @@
     } else if (!start_date.value) {
       alert("시작일을 선택하세요.");
       start_date.focus();
+    } else if (!end_date.value) {
+      alert("종료일을 선택하세요.");
+      end_date.focus();
     } else {
-      location.href = "?company=" + company_name.value
+      location.href = "wait?company=" + company_name.value
         + "&start_date=" + start_date.value
         + "&end_date=" + end_date.value;
     }
@@ -123,7 +126,6 @@
         data : JSON.stringify(param),
         success : function(data) {
           html_for_filename = '<img src="/static/stock_img/' + data.filename + '"' + ' class="card-img-top">'
-          html_for_rr = '<div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">' + '연간 수익률: ' + data.rr + ' %' +'</div>'
           $("#stock_img_div").html(html_for_filename)
           $("#rr_div").html(html_for_rr)
         },
@@ -147,7 +149,7 @@
         headers: {'X-CSRFTOKEN' : '{{ csrf_token }}'},
         data : JSON.stringify(param),
         success : function(data) {
-          html_for_rr = '<div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">' + data.dualmomentum_flag +'</div>'
+          html_for_rr = '<div class="alert alert-dark w-30 p-3" role="alert" style="margin-left: auto; margin-right: auto;"><h4>' + data.dualmomentum_flag +'</h4></div>'
           $("#rr_div").html(html_for_rr)
         },
         error : function(){

@@ -116,9 +116,9 @@ def earingrate(company_name, start_date=None, end_date=None):
     Analyzer.MarketDB()
     mk = Analyzer.MarketDB()
     df = mk.get_daily_price(
-        company_name, start_date=None, end_date=None)
+        company_name, start_date, end_date)
     dr = mk.get_daily_price(
-        company_name, start_date=None, end_date=None)
+        company_name, start_date, end_date)
     # 수익률
     df['MA20'] = df['CLOSE'].rolling(window=20).mean()
     df['STUDDEV'] = df['CLOSE'].rolling(window=20).std()
@@ -158,52 +158,59 @@ def earingrate(company_name, start_date=None, end_date=None):
 
     # 수익율
     for i in range(len(df.CLOSE)):
-        if df.PB.values[i] > 0.8 and df.MFI10.values[i] > 80:
-            if buy_price == 0:
-                buy_price = df.CLOSE.values[i]
-                print("1:", buy_price)
-            else:
-                continue
-        elif df.PB.values[i] < 0.2 and df.MFI10.values[i] < 20:
-            if buy_price > 0 & sell_price == 0:
-                sell_price = df.CLOSE.values[i]
-                print("2", sell_price)
-            else:
-                continue
-        if buy_price > 0 and sell_price > 0:
-            rr = (sell_price-buy_price)/buy_price
-            gross_rr *= rr
-            print(gross_rr)
-            buy_price = 0
-            sell_price = 0
-
-    buy_price1 = 0  # 매수
-    sell_price1 = 0  # 매도
+      if df.PB.values[i]>0.8 and df.MFI10.values[i]>80:     
+         if buy_price==0:
+            buy_price=df.CLOSE.values[i]
+            print("1:",buy_price)
+         else:
+              continue
+      elif df.PB.values[i]<0.2 and df.MFI10.values[i]<20:
+          if buy_price>0 & sell_price==0:
+             sell_price=df.CLOSE.values[i]
+             print("2:",sell_price)
+          else:
+              continue
+      if buy_price > 0 and sell_price > 0:
+         rr=(sell_price-buy_price)/buy_price
+         if rr !=0:
+             gross_rr *= rr
+             print("(",gross_rr)
+             buy_price=0
+             sell_price=0
+         if rr==0:
+             buy_price=0
+             sell_price=0
+      
+    buy_price1 = 0   #매수
+    sell_price1 = 0  #매도
     gross_bb = 1
-    # 수익율
-
-    for i in range(0, len(dr.CLOSE)):
-        if dr.PB.values[i] < 0.05 and dr.IIP21.values[i] > 0:
-            if buy_price1 == 0:
-                buy_price1 = dr.CLOSE.values[i]
-                print("3:", buy_price1)
-            else:
+     #수익율
+ 
+    for i in range(0,len(dr.CLOSE)):
+       if dr.PB.values[i]<0.05 and dr.IIP21.values[i]>0:
+           if buy_price1==0:
+               buy_price1=dr.CLOSE.values[i]
+               print("3:",buy_price1)
+           else:
                 continue
-        elif dr.PB.values[i] > 0.95 and dr.IIP21.values[i] < 0:
-            if buy_price1 > 0 & sell_price1 == 0:
-                sell_price1 = dr.CLOSE.values[i]
-                print("4:", sell_price1)
+       elif dr.PB.values[i]>0.95 and dr.IIP21.values[i]<0:
+            if buy_price1>0 & sell_price1==0:
+               sell_price1=dr.CLOSE.values[i]
+               print("4:",sell_price1)
             else:
                 continue
             if buy_price1 > 0 and sell_price1 > 0:
-                bb = (sell_price1-buy_price1)/buy_price1
-                gross_bb *= bb
-                print(gross_bb)
-                buy_price1 = 0
-                sell_price1 = 0
-
-    return gross_rr*gross_bb
-
+               bb=(sell_price1-buy_price1)/buy_price1
+               if bb !=0:
+                  gross_bb *= bb
+                  print("^",gross_bb)
+                  buy_price1=0
+                  sell_price1=0
+            if bb==0:
+                buy_price1=0
+                sell_pric1e=0
+                    
+    return round((gross_rr*gross_bb)*100, 2)
 
 def signallist(company_name, start_date=None, end_date=None):
     Analyzer.MarketDB()

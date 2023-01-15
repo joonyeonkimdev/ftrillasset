@@ -20,7 +20,7 @@ def predict(code):
         new_index.append(l)
     stock.index = new_index
 
-    for i in range(1, 31):
+    for i in range(1, 6):
         j = i
         plt.rcParams['font.family'] = 'NanumGothic'
 
@@ -126,15 +126,17 @@ def predict(code):
         last_date = rs[0]
 
         days = 1
+        new_last_date = ""
         for r in pre_df.itertuples():
             date = last_date + datetime.timedelta(days=days)
             date = date.strftime("%Y-%m-%d")
+            new_last_date = date
             sql = f"REPLACE INTO DAILY_PRICE_TB (CODE, DATE, CLOSE) VALUES ('{code}', '{date}', {r.CLOSE})"
             cursor.execute(sql)
             days += 1
         conn.commit()
     conn.close()
-    return last_date
+    return new_last_date
 
 
 def delete_predicted_db(code, last_update):

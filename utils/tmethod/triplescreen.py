@@ -19,7 +19,7 @@ def tsgraph(company_name,start_date=None,end_date=None):
     plt.rc("font", family="Malgun Gothic")
 
     mk = Analyzer.MarketDB()
-    df= mk.get_daily_price(company_name,start_date=None,end_date=None)
+    df= mk.get_daily_price(company_name, start_date, end_date)
 
     ema60=df.CLOSE.ewm(span=60).mean()           # 1. 종가의 12주 지수 이동평균
     ema130=df.CLOSE.ewm(span=130).mean()         # 2. 종가의 26주 지수 이동평균
@@ -129,33 +129,36 @@ def tsrevenue(company_name,start_date=None,end_date=None):
     buy_Price=0     
     sell_Price=0
     gross_rr = 1
+    cnt = 0
 
     for i in range(1, len(df.CLOSE)) :
         if df.ema130.values[i-1] < df.ema130.values[i] and  df.slow_d.values[i-1] >= 20 and df.slow_d.values[i] < 20:  
                 print(df.CLOSE.values[i])
                 if buy_Price==0:
                     buy_Price=df.CLOSE.values[i]
-                
                 else:
                     continue
         if df.ema130.values[i-1] > df.ema130.values[i] and df.slow_d.values[i-1] <= 80 and df.slow_d.values[i] > 80:
                 print(df.CLOSE.values[i])
                 if buy_Price>0 and sell_Price==0:
                     sell_Price=df.CLOSE.values[i]
-                    
                 else:
                     continue
-    if buy_Price > 0 and sell_Price > 0:
-        rr=(sell_Price-buy_Price)/buy_Price
-        gross_rr *= rr
-    
-    return gross_rr
+        if buy_Price > 0 and sell_Price > 0:
+            rr=(sell_Price-buy_Price)/buy_Price
+            gross_rr *= rr
+            cnt += 1
+    if cnt != 0:
+        return round(gross_rr * 100, 2)
+    else:
+        return "매매 없음"
+
 
 
 def signal(company_name,start_date=None,end_date=None):
         Analyzer.MarketDB()
         mk = Analyzer.MarketDB()
-        df= mk.get_daily_price(company_name,start_date=None,end_date=None)
+        df= mk.get_daily_price(company_name, start_date, end_date)
 
         
         ema60=df.CLOSE.ewm(span=60).mean()           # 1. 종가의 12주 지수 이동평균
