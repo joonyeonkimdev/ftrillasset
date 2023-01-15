@@ -25,7 +25,7 @@ def mmt():
          end_date = "2023-01-12"
          stock_count = 600
          connection = pymysql.connect(host='localhost', port=3306, 
-            db='FTRILL', user='root', passwd='1234', charset="utf8")
+            db='FTRILL', user='root', password=confidential.get_confidential('databasepw.json', "PASSWORD"), charset="utf8")
          cursor = connection.cursor()
         
         # 사용자가 입력한 시작일자를 DB에서 조회되는 일자로 보정 
