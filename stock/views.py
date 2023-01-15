@@ -6,13 +6,13 @@ import utils.tmethod.bollingerband as bb
 import utils.tmethod.triplescreen as ts
 import utils.tmethod.dualmomentum as dm
 import utils.tmethod.candlestic as candle
+import utils.falearn.falearn as falearn
 import json
 from django.http import JsonResponse
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Create your views here.
-
 
 def backtest(request):
     if request.method != "POST":
@@ -26,6 +26,30 @@ def backtest(request):
                        "start_date": start_date, "end_date": end_date}
             return render(request, 'stock/backtest.html', context)
         return render(request, 'stock/backtest.html')
+    else:
+        pass
+
+def simulate(request):
+    if request.method != "POST":
+        company = request.GET.get('company', None)
+        start_date = request.GET.get('start_date', None)
+        end_date = request.GET.get('end_date', None)
+        if company != None:
+            last_date = falearn.predict(company)
+            end_date = last_date
+            remove_all_files()
+            filename = candle.candlestic(company, start_date, end_date)
+            context = {'filename': filename, "company": company,
+                       "start_date": start_date, "end_date": end_date}
+            return render(request, 'stock/simulate.html', context)
+        return render(request, 'stock/simulate.html')
+    else:
+        pass
+
+
+def portfolio(request):
+    if request.method != "POST":
+        return render(request, 'stock/portfolio.html')
     else:
         pass
 
@@ -73,21 +97,6 @@ def dualmomentum(request):
 
     data = {'dualmomentum_flag': dualmomentum_flag}
     return JsonResponse(data)
-
-
-def simulate(request):
-    if request.method != "POST":
-        return render(request, 'stock/simulate.html')
-    else:
-        pass
-
-
-def portfolio(request):
-    if request.method != "POST":
-        return render(request, 'stock/portfolio.html')
-    else:
-        pass
-
 
 def remove_all_files():
     stock_img_dir = str(BASE_DIR) + '/static/stock_img'

@@ -94,6 +94,19 @@ class MarketDB:
         df = pd.read_sql(sql, self.conn)
         df.index = df["DATE"]
         return df
+
+    def get_code(self, code):
+        # 종목코드/종목명 검색 알고리즘
+        codes_keys = list(self.codes.keys())
+        codes_values = list(self.codes.values())
+        if code in codes_keys: #code가 종목코드일 시
+            pass
+        elif code in codes_values: #code가 종목명일 시 
+            idx = codes_values.index(code)
+            code = codes_keys[idx]
+        else:
+            print("ValueError: Code({}) doesn't exist".format(code))
+        return code
     
     
         

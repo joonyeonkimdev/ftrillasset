@@ -80,10 +80,6 @@ def mmt():
          print(aaa)
          print(f"\nAbasolute momentum ({start_date} ~ {end_date}) : "\
             f"{df['returns'].mean():.2f}%")
-         return list(aaa['code'])
+         return list(aaa['company'])
          
     
-
-
-
-

@@ -123,18 +123,18 @@ def predict(code):
         sql = f"SELECT MAX(DATE) FROM DAILY_PRICE_TB WHERE CODE = '{code}'"
         cursor.execute(sql)
         rs = cursor.fetchone()
-        last_update = rs[0]
+        last_date = rs[0]
 
         days = 1
         for r in pre_df.itertuples():
-            date = last_update + datetime.timedelta(days=days)
+            date = last_date + datetime.timedelta(days=days)
             date = date.strftime("%Y-%m-%d")
             sql = f"REPLACE INTO DAILY_PRICE_TB (CODE, DATE, CLOSE) VALUES ('{code}', '{date}', {r.CLOSE})"
             cursor.execute(sql)
             days += 1
         conn.commit()
     conn.close()
-    return last_update
+    return last_date
 
 
 def delete_predicted_db(code, last_update):

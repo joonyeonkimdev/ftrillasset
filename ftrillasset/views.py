@@ -21,7 +21,8 @@ def home(request):
    return render(request, 'ftrillasset/home.html')
 
 def wait(request):
-   return render(request, 'ftrillasset/wait.html')
+   context = {'msg':'서버 최신화 중입니다. 잠시만 기다려 주십시오.', 'url':'dbupdate'}
+   return render(request, 'wait.html', context)
 
 def dbupdate(request):
    dbupdater = DBUpdater()

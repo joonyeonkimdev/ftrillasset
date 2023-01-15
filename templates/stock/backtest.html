@@ -45,7 +45,7 @@
     </div>
   </div>
   <div class="card mb-3 border-0" style="margin-top: 45px;">
-    <h3>- {{company}} -</h3><br>
+    <h3>{{company}}</h3><br>
     {% if filename %}
       <div id="stock_img_div">
         <img src="/static/stock_img/{{filename}}" class="card-img-top" id="stock_img">
@@ -150,7 +150,7 @@
         headers: {'X-CSRFTOKEN' : '{{ csrf_token }}'},
         data : JSON.stringify(param),
         success : function(data) {
-          html_for_rr = '<div class="alert alert-dark w-25 p-3" role="alert" style="margin-left: auto; margin-right: auto;">' + data.dualmomentum_flag +'</div>'
+          html_for_rr = '<div class="alert alert-dark w-30 p-3" role="alert" style="margin-left: auto; margin-right: auto;"><h4>' + data.dualmomentum_flag +'</h4></div>'
           $("#rr_div").html(html_for_rr)
         },
         error : function(){
@@ -158,7 +158,6 @@
         }
       });
     });
-
 
   </script>
   {% endblock content %}
