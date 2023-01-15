@@ -133,11 +133,11 @@ class DBUpdater:
         """ 배치 역할의 함수 => 하루 한번 DB 최신화 """    
         self.update_comp_info() #종목 최신화
         try:
-            with open(str(BASE_DIR) + "/config.json", "r") as in_file:
+            with open(str(BASE_DIR) + "/utils/stockdb/" + "config.json", "r") as in_file:
                 config = json.load(in_file)
                 pages_to_fetch = config["pages_to_fetch"]
         except FileNotFoundError:
-            with open(str(BASE_DIR) + "/config.json", "w") as out_file: #with 구문 내 스트림은 close() 안해도 됨. => with 구문 내에서만 사용
+            with open(str(BASE_DIR) + "/utils/stockdb/" +"config.json", "w") as out_file: #with 구문 내 스트림은 close() 안해도 됨. => with 구문 내에서만 사용
                 pages_to_fetch = 100
                 config = {"pages_to_fetch":1}
                 json.dump(config, out_file)

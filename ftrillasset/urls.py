@@ -20,5 +20,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('wait', views.wait, name='wait'),
+    path('dbupdate', views.dbupdate, name='dbupdate'),
     path('stock/', include('stock.urls')),
 ]
