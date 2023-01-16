@@ -20,7 +20,7 @@ def predict(code):
         new_index.append(l)
     stock.index = new_index
 
-    for i in range(1, 6):
+    for i in range(1, 4):
         j = i
         plt.rcParams['font.family'] = 'NanumGothic'
 

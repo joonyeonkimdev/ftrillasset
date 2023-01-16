@@ -172,12 +172,12 @@ def earingrate(company_name, start_date=None, end_date=None):
               continue
       if buy_price > 0 and sell_price > 0:
          rr=(sell_price-buy_price)/buy_price
-         if rr !=0:
+         if rr != 0:
              gross_rr *= rr
              print("(",gross_rr)
              buy_price=0
              sell_price=0
-         if rr==0:
+         if rr == 0:
              buy_price=0
              sell_price=0
       
@@ -201,12 +201,12 @@ def earingrate(company_name, start_date=None, end_date=None):
                 continue
             if buy_price1 > 0 and sell_price1 > 0:
                bb=(sell_price1-buy_price1)/buy_price1
-               if bb !=0:
+               if bb != 0:
                   gross_bb *= bb
                   print("^",gross_bb)
                   buy_price1=0
                   sell_price1=0
-            if bb==0:
+            if bb == 0:
                 buy_price1=0
                 sell_pric1e=0
                     
